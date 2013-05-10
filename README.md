@@ -1,7 +1,10 @@
 RivalTracker
 ============
+Written and maintained by [Sam Hazim](https://twitter.com/SamHazim)
 
 A JavaScript library to embed motorsport circuit maps (SVG format) onto websites and animate/simulate race sessions.
+
+![RivalTrackerImage](http://i.imgur.com/kQAOdM7.png)
 
 Possible use cases; 
 
@@ -11,8 +14,26 @@ Possible use cases;
 
 The framework uses the 'requestAnimationFrame' request of browsers to provide higher fidelity (read:fluid) updates and supports 60fps updates where possible.
 
-Implementation
-==============
+How to implement
+================
+1/ Include the two Rival Tracker scripts
+
+```javascript
+<script src='js/RivalTracker.min.[version].js'></script>
+<script src='js/RivalTrackerPaths.min.[version].js'></script>
+```
+
+2/ Create a driverData object to hold the driver position details.
+
+```javascript
+var driverData = {
+    "driver1" : 0,  // 0% through the track
+    "driver2" : 0.15,  // 1.5% through the track
+    "driver3" : 0.55  // 5.5% through the track
+}
+```
+
+3/ Create a new RivalTracker instance, binding the driverData object at creation time. (see later on this page for descriptions on the other parameters)
 
 ```javascript
 var myTrackMap = new RivalTracker("divId", "trackId", driverData, [options]); 
@@ -21,19 +42,13 @@ var myTrackMap = new RivalTracker("divId", "trackId", driverData, [options]);
 Overview of the params:
 ```
 divId - id of the containing div (with a width property set)
-trackId - unique name of the track map that should be rendered (e.g. "daytona_oval") Check the RivalTrackerPaths js for an exhaustive list of tracks
-driverData - object representing the positional data of the drivers on the track, e.g. :
-
-var driverData = {
-    "driver1" : 0,  // 0% through the track
-    "driver2" : 0.15,  // 1.5% through the track
-    "driver3" : 0.55  // 5.5% through the track
-}
+trackId - unique name of the track map that should be rendered (e.g. "daytona_oval") Check the RivalTrackerPaths js for a full list of tracks
+driverData - the object containing the driver data to be used for this instance. The driver positions provided at creation will be the initial driver positions (e.g. the drivers could be all at 0% or they could be at varying positions along the track - it doesn't matter)
 ````
 
 The driver names that are displayed on the map are taken from the key of the key/value pairs in the driverData object. 
 
-options - set of (optional) configuration options that can alter the way the trackmap is rendered/behaves.  The full range of options is below:
+options - set of (optional) configuration options that can alter the way the trackmap is rendered/behaves.  The full range of options are described below:
 
 ```
 var options = {
@@ -51,6 +66,7 @@ var options = {
     labelColor : '#FFFFFF', (colour of the node/marker text)
     labelVertOffset : 0,    (number of pixels to offset the node/marker text. Can be used to have text floating above or below markers)
     reportBufferStatus : true   (provide buffer status updates directly on the map. Further information below)
+    callback : function(event){} (if you want to wire in behaviour when a driver marker is clicked, provide a callback function)
 }
 ```
 ######reportBufferStatus
@@ -71,6 +87,18 @@ If the buffer needs to be reset for any reason (e.g. in the example provided per
 
 Finally, it is more important to provide consistent updates than it is to provide fast updates.  RivalTracker will perform better with regular 30 second updates than it will with updates ranging from 1-20 seconds with a wide variation between updates.
 
+####Adding / Removing Drivers
+Adding and removing drivers is simple.  Just add (or delete) properties to the bound driverData object.  The update will be applied at the next update cycle
+To add a new driver (at 0% position):
+```javascript
+var driverData = {};
+driverData["newDriver"] = 0;
+```
+To delete a driver:
+```javascript
+delete driverData["newDriver"]
+```
+
 
 Example Implementations
 =======================
@@ -83,13 +111,13 @@ RivalTracker API
 ================
 A number of public functions can be executed on a RivalTracker object.
 ```
-updatePositions()
-setNodeColor(driver, colour)
-setNodeStrokeColor(driver, colour)
-setNodeStrokeWidth(driver, width)
-setNodeStrokeDash(driver)
-setLabelColor(driver, colour)
-resetBuffer()
+updatePositions()                   Clones the current state of driverData and applies (or queues) the update
+setNodeColor(driver, colour)        Changes the colour of the provided marker
+setNodeStrokeColor(driver, colour)  Changes the colour of the stroke around the marker
+setNodeStrokeWidth(driver, width)   Changes the width of the stroke around the marker
+setNodeStrokeDash(driver)           Draws the marker stroke in a fixed dash pattern
+setLabelColor(driver, colour)       Changes the label colour of the provided marker
+resetBuffer()                       Resets the RivalTracker instance to its initial state (waiting for its first update)
 ```
 
 Notes
