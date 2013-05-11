@@ -130,7 +130,7 @@ Notes
 ```
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
 ```
-* Careful consideration must be given to the settings for maxPrediction and also the update interval.  As a guideline, set options.maxPrediction to at least 3x the duration of the **maximum** update gap you expect (e.g. if you have updates every 3 seconds with occasional lags of 10 seconds, set maxPrediction to 20000ms)
+* Careful consideration must be given to the settings for maxPrediction and also the update interval.  As a guideline, set options.maxPrediction to at least 2x the duration of the **maximum** update gap you expect (e.g. if you have updates every 3 seconds with occasional lags of 10 seconds, set maxPrediction to 20000ms)
 
 Credits
 =======
