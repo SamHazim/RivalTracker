@@ -8,7 +8,7 @@ A JavaScript library to embed motorsport circuit maps (SVG format) onto websites
 
 Possible use cases; 
 
-1. Add vector circuit maps to websites from a growing library of prepared maps
+1. Add vector circuit maps to websites from a growing library of prepared circuit maps
 2. A framework to draw cars/nodes on said map and animate their progress in near realtime fashion - allowing for at-a-glance race coverage and standings updates.
 3. Provides 'crew-chief/race engineer' functions where engineers can make race decisions based on the current status of the race (e.g. when to pit).
 
@@ -33,7 +33,7 @@ var driverData = {
 }
 ```
 
-3/ Create a new RivalTracker instance, binding the driverData object at creation time. (see later on this page for descriptions on the other parameters)
+3/ Create a new RivalTracker instance, binding the driverData object at creation time.
 
 ```javascript
 var myTrackMap = new RivalTracker("divId", "trackId", driverData, [options]); 
