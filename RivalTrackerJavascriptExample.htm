@@ -1,0 +1,746 @@
+
+<!-- saved from url=(0059)file:///C:/Users/Samiad/Documents/JavaScript/SVG/index.html -->
+<html><head>
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+<title>RivalTracker Javascript Example</title>
+<link rel="stylesheet" href="css/offline.css" type="text/css">
+</head>
+<body>
+<script src='js/RivalTracker.min.1.0.js'></script>
+<script src='js/RivalTrackerPaths.min.1.0.js'></script>
+<script type="text/javascript">
+
+window.onload = function() {
+
+var F1Data = {
+    "VET":0,
+    "WEB":0,
+    "ALO":0,
+    "MAS":0,
+	"BUT":0,
+    "PER":0,
+    "RAI":0,
+	"GRO":0,
+    "ROS":0,
+    "HAM":0,
+	"HUL":0,
+    "GUT":0,
+    "DIR":0,
+	"SUT":0,
+    "MAL":0,
+    "BOT":0,
+    "VER":0,
+    "RIC":0,
+    "PIC":0,
+	"GAR":0,
+	"BIA":0,
+	"CHI":0
+};
+
+var nascarData = {
+	"48":0,
+	"99":0,
+	"88":0,
+	"15":0,
+	"2":0,
+	"5":0,
+	"43":0,
+	"27":0,
+	"18":0,
+	"16":0,
+	"20":0,
+	"29":0,
+	"56":0,
+	"24":0,
+	"1":0,
+	"17":0,
+	"39":0,
+	"22":0,
+	"31":0,
+	"78":0,
+	"9":0,
+	"14":0,
+	"12":0,
+	"13":0,
+	"42":0,
+	"34":0,
+	"10":0,
+	"47":0,
+	"38":0,
+	"7":0,
+	"11":0,
+	"36":0,
+	"30":0,
+	"83":0,
+	"51":0,
+	"33":0,
+	"93":0,
+	"95":0,
+	"98":0,
+	"55":0,
+	"32":0,
+	"44":0,
+	"21":0,
+}
+
+var indycarData = {
+	"SAT":0,
+	"AND":0,
+	"CAS":0,
+	"HIN":0,
+	"DIX":0,
+	"HUN":0,
+	"WIL":0,
+	"SER":0,
+	"SIL":0,
+	"KIM":0,
+	"VIS":0,
+	"PAG":0,
+	"NEW":0,
+	"RAH":0,
+	"FRA":0,
+	"HIL":0,
+	"KAN":0,
+	"CON":0,
+	"TAG":0,
+	"BOU":0,
+	"VAU":0,
+	"JAK":0,
+	"CAR":0,
+	"SAA":0,
+	"BEA":0,
+	"ALL":0,
+	"POW":0
+}
+
+var defaultData = {};
+for(var count = 1; count <= 20; count++) {
+    defaultData[count] = 0;
+}
+
+function clickCallback(evt) {
+    window.alert("clicked : " + evt.currentTarget.id);
+}
+
+var options = {
+    scaling : 100,
+    pathColor : '#000000',
+    maxPrediction : 10000,
+    pathColor : '#000000',
+    nodeSize : 15,
+    labelFont : "Arial",
+    //labelFontSize : "9px",
+    labelColor : '#FFFFFF'
+};
+
+var track1Options = JSON.parse(JSON.stringify(options));
+track1Options.nodeSize = 14;
+track1Options.callback = clickCallback;
+
+var track2Options = JSON.parse(JSON.stringify(options));
+track2Options.pathColor = '#FFFFFF';
+track2Options.labelColor = '#FFFFFF';
+track2Options.labelFont = 'verdana';
+track2Options.labelVertOffset = -2;
+track2Options.labelFontSize = '14px';
+track2Options.pathStrokeWidth = 4;
+track2Options.nodeSize = 15;
+track2Options.nodeStrokeColor = '#FFFFFF';
+track2Options.callback = clickCallback;
+
+var track3Options = JSON.parse(JSON.stringify(options));
+track3Options.pathColor = '#FFE100';
+track3Options.labelFontSize = "13px";
+track3Options.callback = clickCallback;
+
+var track4Options = JSON.parse(JSON.stringify(options));
+track4Options.pathColor = '#000000';
+track4Options.labelColor = '#0000FF';
+track4Options.pathStrokeWidth = 4;
+track4Options.nodeStrokeColor = '#0000FF';
+track4Options.callback = clickCallback;
+
+var horizOptions = JSON.parse(JSON.stringify(options));
+horizOptions.pathStrokeWidth = 3;
+horizOptions.nodeSize = 7;
+horizOptions.nodeStrokeColor = 'black';
+horizOptions.nodeStrokeWidth = 1;
+horizOptions.labelFontSize = 5;
+horizOptions.callback = clickCallback;
+
+var track1 = new RivalTracker("track1","suzuka_gp", F1Data, track1Options);
+var track2 = new RivalTracker("track2","daytona_oval", nascarData, track2Options);
+var track3 = new RivalTracker("track3","default", defaultData, track3Options);
+var track4 = new RivalTracker("track4","indy_oval", indycarData, track4Options);
+var horizontalTrack = new RivalTracker("horizontalTrack","horizontal", F1Data, horizOptions);
+
+horizontalTrack.setNodeColor('VET','#0000FF');
+horizontalTrack.setNodeColor('WEB','#0000FF');
+horizontalTrack.setNodeColor('ALO','#D32232');
+horizontalTrack.setNodeColor('MAS','#D32232');
+horizontalTrack.setNodeColor('BUT','#A9A9A9');
+horizontalTrack.setNodeColor('PER','#A9A9A9');
+horizontalTrack.setNodeColor('RAI','#000000');
+horizontalTrack.setNodeColor('GRO','#000000');
+horizontalTrack.setNodeColor('ROS','#A9A9A9');
+horizontalTrack.setNodeColor('HAM','#A9A9A9');
+horizontalTrack.setNodeColor('HUL','#2F4F4F');
+horizontalTrack.setNodeColor('GUT','#2F4F4F');
+horizontalTrack.setNodeColor('DIR','#FFFFFF');
+horizontalTrack.setNodeColor('SUT','#FFFFFF');
+horizontalTrack.setNodeColor('MAL','#0000CD');
+horizontalTrack.setNodeColor('BOT','#0000CD');
+horizontalTrack.setNodeColor('VER','#0000FF');
+horizontalTrack.setNodeColor('RIC','#0000FF');
+horizontalTrack.setNodeColor('PIC','#228B22');
+horizontalTrack.setNodeColor('GAR','#228B22');
+horizontalTrack.setNodeColor('BIA','#000000');
+horizontalTrack.setNodeColor('CHI','#000000');
+
+horizontalTrack.setNodeStrokeColor('VET','#8A2BE2');
+horizontalTrack.setNodeStrokeColor('WEB','#8A2BE2');
+horizontalTrack.setNodeStrokeColor('ALO','#FFFFFF');
+horizontalTrack.setNodeStrokeColor('MAS','#FFFFFF');
+horizontalTrack.setNodeStrokeColor('BUT','#FF4500');
+horizontalTrack.setNodeStrokeColor('PER','#FF4500');
+horizontalTrack.setNodeStrokeColor('RAI','#FFD700');
+horizontalTrack.setNodeStrokeColor('GRO','#FFD700');
+horizontalTrack.setNodeStrokeColor('ROS','#778899');
+horizontalTrack.setNodeStrokeColor('HAM','#778899');
+horizontalTrack.setNodeStrokeColor('HUL','#FFFFFF');
+horizontalTrack.setNodeStrokeColor('GUT','#FFFFFF');
+horizontalTrack.setNodeStrokeColor('DIR','#7FFF00');
+horizontalTrack.setNodeStrokeColor('SUT','#7FFF00');
+horizontalTrack.setNodeStrokeColor('MAL','#FFFFFF');
+horizontalTrack.setNodeStrokeColor('BOT','#FFFFFF');
+horizontalTrack.setNodeStrokeColor('VER','#DC143C');
+horizontalTrack.setNodeStrokeColor('RIC','#DC143C');
+horizontalTrack.setNodeStrokeColor('PIC','#FFD700');
+horizontalTrack.setNodeStrokeColor('GAR','#FFD700');
+horizontalTrack.setNodeStrokeColor('BIA','#FF0000');
+horizontalTrack.setNodeStrokeColor('CHI','#FF0000');
+
+horizontalTrack.setLabelColor('VET','#FFFF00');
+horizontalTrack.setLabelColor('WEB','#FFFF00');
+horizontalTrack.setLabelColor('ALO','#FFFFFF');
+horizontalTrack.setLabelColor('MAS','#FFFFFF');
+horizontalTrack.setLabelColor('BUT','#FF4500');
+horizontalTrack.setLabelColor('PER','#FF4500');
+horizontalTrack.setLabelColor('RAI','#FFD700');
+horizontalTrack.setLabelColor('GRO','#FFD700');
+horizontalTrack.setLabelColor('ROS','#FFFFFF');
+horizontalTrack.setLabelColor('HAM','#FFFFFF');
+horizontalTrack.setLabelColor('HUL','#FFFFFF');
+horizontalTrack.setLabelColor('GUT','#FFFFFF');
+horizontalTrack.setLabelColor('DIR','#FF8C00');
+horizontalTrack.setLabelColor('SUT','#FF8C00');
+horizontalTrack.setLabelColor('MAL','#FFFFFF');
+horizontalTrack.setLabelColor('BOT','#FFFFFF');
+horizontalTrack.setLabelColor('VER','#DC143C');
+horizontalTrack.setLabelColor('RIC','#DC143C');
+horizontalTrack.setLabelColor('PIC','#FFD700');
+horizontalTrack.setLabelColor('GAR','#FFD700');
+horizontalTrack.setLabelColor('BIA','#FF0000');
+horizontalTrack.setLabelColor('CHI','#FF0000');
+
+
+
+track1.setNodeColor('VET','#0000FF');
+track1.setNodeColor('WEB','#0000FF');
+track1.setNodeColor('ALO','#D32232');
+track1.setNodeColor('MAS','#D32232');
+track1.setNodeColor('BUT','#A9A9A9');
+track1.setNodeColor('PER','#A9A9A9');
+track1.setNodeColor('RAI','#000000');
+track1.setNodeColor('GRO','#000000');
+track1.setNodeColor('ROS','#A9A9A9');
+track1.setNodeColor('HAM','#A9A9A9');
+track1.setNodeColor('HUL','#2F4F4F');
+track1.setNodeColor('GUT','#2F4F4F');
+track1.setNodeColor('DIR','#FFFFFF');
+track1.setNodeColor('SUT','#FFFFFF');
+track1.setNodeColor('MAL','#0000CD');
+track1.setNodeColor('BOT','#0000CD');
+track1.setNodeColor('VER','#0000FF');
+track1.setNodeColor('RIC','#0000FF');
+track1.setNodeColor('PIC','#228B22');
+track1.setNodeColor('GAR','#228B22');
+track1.setNodeColor('BIA','#000000');
+track1.setNodeColor('CHI','#000000');
+
+track1.setNodeStrokeColor('VET','#8A2BE2');
+track1.setNodeStrokeColor('WEB','#8A2BE2');
+track1.setNodeStrokeColor('ALO','#FFFFFF');
+track1.setNodeStrokeColor('MAS','#FFFFFF');
+track1.setNodeStrokeColor('BUT','#FF4500');
+track1.setNodeStrokeColor('PER','#FF4500');
+track1.setNodeStrokeColor('RAI','#FFD700');
+track1.setNodeStrokeColor('GRO','#FFD700');
+track1.setNodeStrokeColor('ROS','#778899');
+track1.setNodeStrokeColor('HAM','#778899');
+track1.setNodeStrokeColor('HUL','#FFFFFF');
+track1.setNodeStrokeColor('GUT','#FFFFFF');
+track1.setNodeStrokeColor('DIR','#7FFF00');
+track1.setNodeStrokeColor('SUT','#7FFF00');
+track1.setNodeStrokeColor('MAL','#FFFFFF');
+track1.setNodeStrokeColor('BOT','#FFFFFF');
+track1.setNodeStrokeColor('VER','#DC143C');
+track1.setNodeStrokeColor('RIC','#DC143C');
+track1.setNodeStrokeColor('PIC','#FFD700');
+track1.setNodeStrokeColor('GAR','#FFD700');
+track1.setNodeStrokeColor('BIA','#FF0000');
+track1.setNodeStrokeColor('CHI','#FF0000');
+
+track1.setLabelColor('VET','#FFFF00');
+track1.setLabelColor('WEB','#FFFF00');
+track1.setLabelColor('ALO','#FFFFFF');
+track1.setLabelColor('MAS','#FFFFFF');
+track1.setLabelColor('BUT','#FF4500');
+track1.setLabelColor('PER','#FF4500');
+track1.setLabelColor('RAI','#FFD700');
+track1.setLabelColor('GRO','#FFD700');
+track1.setLabelColor('ROS','#FFFFFF');
+track1.setLabelColor('HAM','#FFFFFF');
+track1.setLabelColor('HUL','#FFFFFF');
+track1.setLabelColor('GUT','#FFFFFF');
+track1.setLabelColor('DIR','#FF8C00');
+track1.setLabelColor('SUT','#FF8C00');
+track1.setLabelColor('MAL','#FFFFFF');
+track1.setLabelColor('BOT','#FFFFFF');
+track1.setLabelColor('VER','#DC143C');
+track1.setLabelColor('RIC','#DC143C');
+track1.setLabelColor('PIC','#FFD700');
+track1.setLabelColor('GAR','#FFD700');
+track1.setLabelColor('BIA','#FF0000');
+track1.setLabelColor('CHI','#FF0000');
+
+track2.setNodeColor('48','#0606CC');
+track2.setNodeColor('99','#D4FF00');
+track2.setNodeColor('88','#209E06');
+track2.setNodeColor('15','#000000');
+track2.setNodeColor('2','#0734B0');
+track2.setNodeColor('5','#B50000');
+track2.setNodeColor('43','#40FFFC');
+track2.setNodeColor('27','#FFFF00');
+track2.setNodeColor('18','#FFEE00');
+track2.setNodeColor('16','#000000');
+track2.setNodeColor('20','#FF8800');
+track2.setNodeColor('29','#000000');
+track2.setNodeColor('56','#0011FF');
+track2.setNodeColor('24','#960000');
+track2.setNodeColor('1','#000000');
+track2.setNodeColor('17','#00C8FF');
+track2.setNodeColor('39','#FF5C5C');
+track2.setNodeColor('22','#FFFF00');
+track2.setNodeColor('31','#000000');
+track2.setNodeColor('78','#383838');
+track2.setNodeColor('9','#000000');
+track2.setNodeColor('14','#000000');
+track2.setNodeColor('12','#000000');
+track2.setNodeColor('13','#FFFFFF');
+track2.setNodeColor('42','#FF0000');
+track2.setNodeColor('34','#FFFF00');
+track2.setNodeColor('10','#33FF00');
+track2.setNodeColor('47','#E00000');
+track2.setNodeColor('38','#000000');
+track2.setNodeColor('7','#FFFFFF');
+track2.setNodeColor('11','#9430FF');
+track2.setNodeColor('36','#FFFFFF');
+track2.setNodeColor('30','#84FF00');
+track2.setNodeColor('83','#FF0000');
+track2.setNodeColor('51','#000000');
+track2.setNodeColor('33','#FFBB00');
+track2.setNodeColor('93','#006EFF');
+track2.setNodeColor('95','#FF0000');
+track2.setNodeColor('98','#000000');
+track2.setNodeColor('55','#00D0FF');
+track2.setNodeColor('32','#FFFFFF');
+track2.setNodeColor('44','#ADADAD');
+track2.setNodeColor('21','#FFFFFF');
+
+
+track2.setLabelColor('48','#FFFFFF');
+track2.setLabelColor('99','#616161');
+track2.setLabelColor('88','#FF1717');
+track2.setLabelColor('15','#FFFFFF');
+track2.setLabelColor('2','#E8EEFF');
+track2.setLabelColor('5','#FFFFFF');
+track2.setLabelColor('43','#406CFF');
+track2.setLabelColor('27','#000000');
+track2.setLabelColor('18','#000000');
+track2.setLabelColor('16','#FFFFFF');
+track2.setLabelColor('20','#FFFFFF');
+track2.setLabelColor('29','#FFFFFF');
+track2.setLabelColor('56','#FFFFFF');
+track2.setLabelColor('24','#FFFB00');
+track2.setLabelColor('1','#FFFFFF');
+track2.setLabelColor('17','#FFFFFF');
+track2.setLabelColor('39','#FFFFFF');
+track2.setLabelColor('22','#FF0000');
+track2.setLabelColor('31','#FF0000');
+track2.setLabelColor('78','#FF5E5E');
+track2.setLabelColor('9','#FFFF00');
+track2.setLabelColor('14','#FF4000');
+track2.setLabelColor('12','#FFFFFF');
+track2.setLabelColor('13','#0EA600');
+track2.setLabelColor('42','#FFFFFF');
+track2.setLabelColor('34','#0000FF');
+track2.setLabelColor('10','#FF4800');
+track2.setLabelColor('47','#FFFFFF');
+track2.setLabelColor('38','#E6CB00');
+track2.setLabelColor('7','#FFBB00');
+track2.setLabelColor('11','#FFFFFF');
+track2.setLabelColor('36','#000000');
+track2.setLabelColor('30','#FFFF00');
+track2.setLabelColor('83','#000000');
+track2.setLabelColor('51','#FFFFFF');
+track2.setLabelColor('33','#000000');
+track2.setLabelColor('93','#FF0000');
+track2.setLabelColor('95','#FFFF00');
+track2.setLabelColor('98','#FF0000');
+track2.setLabelColor('55','#FFFFFF');
+track2.setLabelColor('32','#FF2A00');
+track2.setLabelColor('44','#FF9100');
+track2.setLabelColor('21','#DBA800');
+
+
+track2.setNodeStrokeColor('48','#000000');
+track2.setNodeStrokeColor('99','#00DDFF');
+track2.setNodeStrokeColor('88','#FFFFFF');
+track2.setNodeStrokeColor('15','#FF0000');
+track2.setNodeStrokeColor('2','#FF0000');
+track2.setNodeStrokeColor('5','#000000');
+track2.setNodeStrokeColor('43','#406CFF');
+track2.setNodeStrokeColor('27','#157D00');
+track2.setNodeStrokeColor('18','#000000');
+track2.setNodeStrokeColor('16','#757575');
+track2.setNodeStrokeColor('20','#000000');
+track2.setNodeStrokeColor('29','#9C0303');
+track2.setNodeStrokeColor('56','#FF0000');
+track2.setNodeStrokeColor('24','#000000');
+track2.setNodeStrokeColor('1','#757575');
+track2.setNodeStrokeColor('17','#FFA600');
+track2.setNodeStrokeColor('39','#520000');
+track2.setNodeStrokeColor('22','#000000');
+track2.setNodeStrokeColor('31','#FFFFFF');
+track2.setNodeStrokeColor('78','#FFFFFF');
+track2.setNodeStrokeColor('9','#FFFFFF');
+track2.setNodeStrokeColor('14','#FFFFFF');
+track2.setNodeStrokeColor('12','#FFFFFF');
+track2.setNodeStrokeColor('13','#0034D1');
+track2.setNodeStrokeColor('42','#FFFFFF');
+track2.setNodeStrokeColor('34','#0000FF');
+track2.setNodeStrokeColor('10','#000000');
+track2.setNodeStrokeColor('47','#009BE8');
+track2.setNodeStrokeColor('38','#E6CB00');
+track2.setNodeStrokeColor('7','#000000');
+track2.setNodeStrokeColor('11','#9430FF');
+track2.setNodeStrokeColor('36','#FF0000');
+track2.setNodeStrokeColor('30','#FF0000');
+track2.setNodeStrokeColor('83','#000000');
+track2.setNodeStrokeColor('51','#FF0000');
+track2.setNodeStrokeColor('33','#FFFFFF');
+track2.setNodeStrokeColor('93','#FFD000');
+track2.setNodeStrokeColor('95','#0000FF');
+track2.setNodeStrokeColor('98','#FFFFFF');
+track2.setNodeStrokeColor('55','#05677D');
+track2.setNodeStrokeColor('32','#000000');
+track2.setNodeStrokeColor('44','#000000');
+track2.setNodeStrokeColor('21','#000000');
+
+track4.setNodeColor('SAT','#FFFFFF');
+track4.setNodeColor('AND','#1000A1');
+track4.setNodeColor('CAS','#FF2424');
+track4.setNodeColor('HIN','#00F208');
+track4.setNodeColor('DIX','#FFFFFF');
+track4.setNodeColor('HUN','#FFF700');
+track4.setNodeColor('WIL','#FF0000');
+track4.setNodeColor('SER','#00DE43');
+track4.setNodeColor('SIL','#004EB5');
+track4.setNodeColor('KIM','#0036E6');
+track4.setNodeColor('VIS','#0027A8');
+track4.setNodeColor('PAG','#0080FF');
+track4.setNodeColor('NEW','#006CD9');
+track4.setNodeColor('RAH','#000000');
+track4.setNodeColor('FRA','#FFD000');
+track4.setNodeColor('HIL','#000000');
+track4.setNodeColor('KAN','#FFFFFF');
+track4.setNodeColor('POW','#000000');
+track4.setNodeColor('TAG','#00B7FF');
+track4.setNodeColor('BOU','#000000');
+track4.setNodeColor('VAU','#FFA600');
+track4.setNodeColor('JAK','#9C0000');
+track4.setNodeColor('CAR','#CFA62B');
+track4.setNodeColor('SAA','#FFFFFF');
+track4.setNodeColor('BEA','#00AAFF');
+track4.setNodeColor('ALL','#FF0000');
+track4.setNodeColor('CON','#000000');
+
+track4.setLabelColor('SAT','#FF0000');
+track4.setLabelColor('AND','#FFFFFF');
+track4.setLabelColor('CAS','#FFFFFF');
+track4.setLabelColor('HIN','#FF3700');
+track4.setLabelColor('DIX','#FF0000');
+track4.setLabelColor('HUN','#FF0000');
+track4.setLabelColor('WIL','#FFFFFF');
+track4.setLabelColor('SER','#FFFFFF');
+track4.setLabelColor('SIL','#00FF8C');
+track4.setLabelColor('KIM','#FFFFFF');
+track4.setLabelColor('VIS','#FFFFFF');
+track4.setLabelColor('PAG','#FFFFFF');
+track4.setLabelColor('NEW','#FFFFFF');
+track4.setLabelColor('RAH','#FFFFFF');
+track4.setLabelColor('FRA','#FFFFFF');
+track4.setLabelColor('HIL','#FFFFFF');
+track4.setLabelColor('KAN','#FF0000');
+track4.setLabelColor('POW','#FFFFFF');
+track4.setLabelColor('TAG','#FFFFFF');
+track4.setLabelColor('BOU','#ADADAD');
+track4.setLabelColor('VAU','#FFFFFF');
+track4.setLabelColor('JAK','#FFFFFF');
+track4.setLabelColor('CAR','#FFFFFF');
+track4.setLabelColor('SAA','#0450C9');
+track4.setLabelColor('BEA','#FFFF00');
+track4.setLabelColor('ALL','#FFFFFF');
+track4.setLabelColor('CON','#FFFFFF');
+
+track4.setNodeStrokeColor('SAT','#000000');
+track4.setNodeStrokeColor('AND','#ff0000');
+track4.setNodeStrokeColor('CAS','#000000');
+track4.setNodeStrokeColor('HIN','#850303');
+track4.setNodeStrokeColor('DIX','#850303');
+track4.setNodeStrokeColor('HUN','#000000');
+track4.setNodeStrokeColor('WIL','#000000');
+track4.setNodeStrokeColor('SER','#000000');
+track4.setNodeStrokeColor('SIL','#FFFFFF');
+track4.setNodeStrokeColor('KIM','#000000');
+track4.setNodeStrokeColor('VIS','#FF0000');
+track4.setNodeStrokeColor('PAG','#031285');
+track4.setNodeStrokeColor('NEW','#000000');
+track4.setNodeStrokeColor('RAH','#000000');
+track4.setNodeStrokeColor('FRA','#000000');
+track4.setNodeStrokeColor('HIL','#FF0000');
+track4.setNodeStrokeColor('KAN','#000000');
+track4.setNodeStrokeColor('POW','#FF0000');
+track4.setNodeStrokeColor('TAG','#031285');
+track4.setNodeStrokeColor('BOU','#C7C7C7');
+track4.setNodeStrokeColor('VAU','#000000');
+track4.setNodeStrokeColor('JAK','#000000');
+track4.setNodeStrokeColor('CAR','#000000');
+track4.setNodeStrokeColor('SAA','#FFFFFF');
+track4.setNodeStrokeColor('BEA','#FFFF00');
+track4.setNodeStrokeColor('ALL','#000000');
+track4.setNodeStrokeColor('CON','#000000');
+
+// generic data / multiclass
+
+
+
+for(var count = 1; count <= 7; count++){
+	track3.setNodeColor(count,'#FF0000');
+	track3.setNodeStrokeColor(count,'#000000');
+}
+
+for(var count = 8; count <= 15; count++){
+	track3.setNodeColor(count,'#0000FF');
+	track3.setLabelColor(count, '#FFFF00');
+	track3.setNodeStrokeColor(count,'#FFFFFF');
+}
+
+for(var count = 16; count <= 20; count++){
+	track3.setNodeColor(count,'#FFCC00');
+	track3.setLabelColor(count, '#000000');
+	track3.setNodeStrokeColor(count,'#000000');
+	track3.setNodeStrokeDash(count);
+}
+
+
+
+function incrementTelemData() {
+	var F1speed = 0.2;
+	var nascarSpeed = 0.28;
+	var indycarSpeed = 0.3;
+
+	F1Data["VET"] = F1Data["VET"] + Math.floor((Math.random()*10)+20) * F1speed;
+	F1Data["WEB"] = F1Data["WEB"] + Math.floor((Math.random()*9)+20) * F1speed;
+	F1Data["ALO"] = F1Data["ALO"] + Math.floor((Math.random()*9)+20) * F1speed;
+	F1Data["MAS"] = F1Data["MAS"] + Math.floor((Math.random()*8)+20) * F1speed;
+	F1Data["BUT"] = F1Data["BUT"] + Math.floor((Math.random()*7)+20) * F1speed;
+	F1Data["PER"] = F1Data["PER"] + Math.floor((Math.random()*7)+20) * F1speed;
+	F1Data["RAI"] = F1Data["RAI"] + Math.floor((Math.random()*9)+20) * F1speed;
+	F1Data["GRO"] = F1Data["GRO"] + Math.floor((Math.random()*8)+20) * F1speed;
+	F1Data["ROS"] = F1Data["ROS"] + Math.floor((Math.random()*8)+20) * F1speed;
+	F1Data["HAM"] = F1Data["HAM"] + Math.floor((Math.random()*8)+20) * F1speed;
+	F1Data["HUL"] = F1Data["HUL"] + Math.floor((Math.random()*7)+20) * F1speed;
+	F1Data["GUT"] = F1Data["GUT"] + Math.floor((Math.random()*7)+20) * F1speed;
+	F1Data["DIR"] = F1Data["DIR"] + Math.floor((Math.random()*7)+20) * F1speed;
+	F1Data["SUT"] = F1Data["SUT"] + Math.floor((Math.random()*7)+20) * F1speed;
+	F1Data["MAL"] = F1Data["MAL"] + Math.floor((Math.random()*6)+20) * F1speed;
+	F1Data["BOT"] = F1Data["BOT"] + Math.floor((Math.random()*6)+20) * F1speed;
+	F1Data["VER"] = F1Data["VER"] + Math.floor((Math.random()*6)+20) * F1speed;
+	F1Data["RIC"] = F1Data["RIC"] + Math.floor((Math.random()*6)+20) * F1speed;
+	F1Data["PIC"] = F1Data["PIC"] + Math.floor((Math.random()*5)+20) * F1speed;
+	F1Data["GAR"] = F1Data["GAR"] + Math.floor((Math.random()*5)+20) * F1speed;
+	F1Data["BIA"] = F1Data["BIA"] + Math.floor((Math.random()*5)+20) * F1speed;
+	F1Data["CHI"] = F1Data["CHI"] + Math.floor((Math.random()*5)+20) * F1speed;
+
+	nascarData['48'] = nascarData['48'] + Math.floor((Math.random()*6)+20) * nascarSpeed;
+	nascarData['99'] = nascarData['99'] + Math.floor((Math.random()*5.5)+20) * nascarSpeed;
+	nascarData['88'] = nascarData['88'] + Math.floor((Math.random()*5.4)+20) * nascarSpeed;
+	nascarData['15'] = nascarData['15'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['2'] = nascarData['2'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['5'] = nascarData['5'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['43'] = nascarData['43'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['27'] = nascarData['27'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['18'] = nascarData['18'] + Math.floor((Math.random()*5.8)+20) * nascarSpeed;
+	nascarData['16'] = nascarData['16'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['20'] = nascarData['20'] + Math.floor((Math.random()*5.2)+20) * nascarSpeed;
+	nascarData['29'] = nascarData['29'] + Math.floor((Math.random()*5.8)+20) * nascarSpeed;
+	nascarData['56'] = nascarData['56'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['24'] = nascarData['24'] + Math.floor((Math.random()*5.7)+20) * nascarSpeed;
+	nascarData['1'] = nascarData['1'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['17'] = nascarData['17'] + Math.floor((Math.random()*5.8)+20) * nascarSpeed;
+	nascarData['39'] = nascarData['39'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['22'] = nascarData['22'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['31'] = nascarData['31'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['78'] = nascarData['78'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['9'] = nascarData['9'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['14'] = nascarData['14'] + Math.floor((Math.random()*5.8)+20) * nascarSpeed;
+	nascarData['12'] = nascarData['12'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['13'] = nascarData['13'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['42'] = nascarData['42'] + Math.floor((Math.random()*5.2)+20) * nascarSpeed;
+	nascarData['34'] = nascarData['34'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['10'] = nascarData['10'] + Math.floor((Math.random()*4.8)+20) * nascarSpeed;
+	nascarData['47'] = nascarData['47'] + Math.floor((Math.random()*5.2)+20) * nascarSpeed;
+	nascarData['38'] = nascarData['38'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['7'] = nascarData['7'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['11'] = nascarData['11'] + Math.floor((Math.random()*5.6)+20) * nascarSpeed;
+	nascarData['36'] = nascarData['36'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['30'] = nascarData['30'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['83'] = nascarData['83'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['51'] = nascarData['51'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['33'] = nascarData['33'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['93'] = nascarData['93'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['95'] = nascarData['95'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['98'] = nascarData['98'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['55'] = nascarData['55'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['32'] = nascarData['32'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['44'] = nascarData['44'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+	nascarData['21'] = nascarData['21'] + Math.floor((Math.random()*5)+20) * nascarSpeed;
+
+    for(var driver in F1Data){
+        if(F1Data.hasOwnProperty(driver)) {
+            if(F1Data[driver] > 100) {
+                F1Data[driver] -= 100;
+            }
+        }
+    }
+
+	for(var driver in nascarData){
+        if(nascarData.hasOwnProperty(driver)) {
+            if(nascarData[driver] > 100) {
+                nascarData[driver] -= 100;
+            }
+        }
+    }
+
+	for(var driver in indycarData){
+		indycarData[driver] = indycarData[driver] + Math.floor((Math.random()*5)+20) * indycarSpeed;
+        if(indycarData.hasOwnProperty(driver)) {
+            if(indycarData[driver] > 100) {
+                indycarData[driver] -= 100;
+            }
+        }
+    }
+
+	for(var driver in defaultData){
+		defaultData[driver] = defaultData[driver] + Math.floor((Math.random()*5)+20) * F1speed;
+        if(defaultData.hasOwnProperty(driver)) {
+            if(defaultData[driver] > 100) {
+                defaultData[driver] -= 100;
+            }
+        }
+    }
+
+	for(var count = 1; count <= 7; count++){
+		defaultData[count] = defaultData[count] + Math.floor((Math.random()*5)+20) * F1speed;
+	}
+
+	for(var count = 8; count <= 15; count++){
+		defaultData[count] = defaultData[count] + Math.floor((Math.random()*5)+15) * F1speed;
+	}
+
+	for(var count = 16; count <= 20; count++){
+		defaultData[count] = defaultData[count] + Math.floor((Math.random()*5)+10) * F1speed;
+	}
+
+
+    track1.updatePositions();
+	track2.updatePositions();
+	track3.updatePositions();
+    track4.updatePositions();
+	horizontalTrack.updatePositions();
+
+}
+
+setInterval(incrementTelemData, 3000);
+}
+
+</script>
+
+
+
+<div id="container">
+	<div id="logo"><img src="img/logo.png"></div>
+
+	<div id="tracks">
+		<p>Rival Tracker is a Javascript library that can be used to embed high quality track maps for JS environments/websites.  Rival Tracker supports fluid animation of markers moving through the tracks and is an ideal mechanism to provide live or near live status updates of motor racing events (both real and simracing).</p>
+        <p>Examples of use are provided below with further instruction available on the <a href="https://github.com/SamHazim/RivalTracker">GitHub project page</a>.</p>
+
+        <div id="horizTrackWrapper" align="center">
+            <div id="horizontalTrack"></div>
+        </div>
+		<div id="track1Wrapper" class="track">
+            <trackLabel>Formula 1</trackLabel>
+            <div id="track1"></div>
+            This map features driver nodes with custom colours, strokes and labels.  Click the driver node to execute the example callback function.
+		</div>
+        <div id="track2Wrapper" class="track black">
+            <trackLabel>NASCAR</trackLabel>
+            <div id="track2"></div>
+            This map features increased driver node size, along with custom colours, strokes and labels.  The circuit path has been coloured to co-ordinate with the div colour scheme.  Click the driver node to execute the example callback function.
+        </div>
+        <div id="track3Wrapper" class="track black">
+            <trackLabel><font color="#FFE100">Circular Map</font></trackLabel>
+            <div id="track3"></div>
+            Example of a multiclass race event using the circular/fallback circuit map.
+        </div>
+        <div id="track4Wrapper" class="track">
+            <trackLabel>IndyCar</trackLabel>
+            <div id="track4"></div>
+        </div>
+      <div id="RacingRivals">
+            <center><form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="5NKGHANPULAGE">
+<input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form></center>
+
+
+        Rival Tracker written by Sam Hazim copyright &#169; 2013.  If you are race iRacing check out my statistics tracking application for iRacing - Racing Rivals<br><br>
+        <a href="http://bit.ly/ahPrL5"><img src="http://www.samiad.co.uk/RRsig.png"></a>
+
+      </div>
+	</div>
+
+	<div id="bottom">
+
+	</div>
+
+</div>
+
+
+
+</body></html>
+
