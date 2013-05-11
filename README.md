@@ -103,7 +103,7 @@ delete driverData["newDriver"]
 Example Implementations
 =======================
 ### JavaScript
-An example 100% JavaScript implementation is provided under /examples (RivalTrackerOfflineDemo.htm)
+An example 100% JavaScript implementation is provided (RivalTrackerJavascriptExample.htm)
 ### C# iRacing
 A C#/JavaScript implementation is also available for use with iRacing.  A C# WebSockets server communicates with iRacing and provides live positional data to a JavaScript WebSockets client for map animation.  The project is available at [RivalTracker-for-iRacing](https://github.com/SamHazim/RivalTracker-for-iRacing)
 
