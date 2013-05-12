@@ -6,6 +6,8 @@ A JavaScript library to embed motorsport circuit maps (SVG format) onto websites
 
 ![RivalTrackerImage](http://i.imgur.com/kQAOdM7.png)
 
+Demo page to demonstrate -> http://www.samiad.co.uk/rivaltracker/RivalTrackerJavascriptExample.htm
+
 Possible use cases; 
 
 1. Add vector circuit maps to websites from a growing library of prepared circuit maps
@@ -103,7 +105,7 @@ delete driverData["newDriver"]
 Example Implementations
 =======================
 ### JavaScript
-An example 100% JavaScript implementation is provided (RivalTrackerJavascriptExample.htm)
+An example 100% JavaScript implementation is provided (RivalTrackerJavascriptExample.htm)  Also available at http://www.samiad.co.uk/rivaltracker/RivalTrackerJavascriptExample.htm
 ### C# iRacing
 A C#/JavaScript implementation is also available for use with iRacing.  A C# WebSockets server communicates with iRacing and provides live positional data to a JavaScript WebSockets client for map animation.  The project is available at [RivalTracker-for-iRacing](https://github.com/SamHazim/RivalTracker-for-iRacing)
 
