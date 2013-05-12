@@ -123,13 +123,19 @@ resetBuffer()                       Resets the RivalTracker instance to its init
 Notes
 =====
 * It is important to use the same driverData object from the beginning of the RivalTracker lifecycle through to the end.  Once a RivalTracker instance is bound to a driverData object it cannot use any other driverData object.
+* IE has poor SVG support - IE8 has no native SVG support (but allows use of a plugin).  IE9 has native SVG support.
 * Firefox 20 has poor SVG animation performance and is not recommended for use.  The latest Firefox nightly has brought things up to comparable speed with Chrome, but Chrome still seems to be the fastest.
 * Different browsers will handle animation priority in different ways.  If you switch a tab with embedded RivalTracker into a background tab then depending on the browser the results could range from movements continuing at a reduced framerate (good) to the movements completely stopping and being queued up for movement when the tab is made active (bad)
 * Once a RivalTracker map has been added to a div you should not attempt to perform any 'innerHTML' modifications to the div as the browser may stop node animation entirely.
-* HTML pages must have the correct meta content type, e.g.
+* HTML pages must have the correct DOCTYPE:
+```
+<!DOCTYPE html>
+```
+and also the correct content-type:
 ```
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
 ```
+otherwise the maps won't display in IE9.
 * Careful consideration must be given to the settings for maxPrediction and also the update interval.  As a guideline, set options.maxPrediction to at least 2x the duration of the **maximum** update gap you expect (e.g. if you have updates every 3 seconds with occasional lags of 10 seconds, set maxPrediction to 20000ms)
 
 Credits
