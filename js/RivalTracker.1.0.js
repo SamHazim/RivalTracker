@@ -48,7 +48,7 @@ var RivalTracker = (function () {
         var buffer = 0;
         
         var colors = ["#000066","#00FFFF","#0000FF","#80FF00","#808080","#00FF00","#A02820","#FF00FF","#008000","#800000","#000080","#808000","#FFA000","#800080","#FF0000","#C0C0C0","#008080","#F080F0","#FF0066","#CC3366","#996666","#669966","#33CC66","#00FF66","#FFCCCC","#CCCCCC","#99CCCC","#66CCCC","#33CCCC","#00FFCC","#330066","#9900FF","#6699FF","#6666CC","#996633","#330000","#330033","#990066"]
-        if(RivalTracker.paths[trackId] == undefined) trackId = "default";
+        if(RivalTracker.paths[trackId] == undefined) trackId = "defaultMap";
 
         // set default options if not specified
         if(typeof options === "undefined") {
@@ -113,8 +113,6 @@ var RivalTracker = (function () {
             for(var index in RivalTracker.paths[trackId].paths) {
                 newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');    
                 newPath.setAttribute('d', RivalTracker.paths[trackId].paths[index]);
-                //newPath.setAttribute('stroke-linecap', 'butt');
-		        //newPath.setAttribute('stroke-linejoin', 'round');
 		        newPath.setAttribute('stroke-miterlimit', '4');
 		        newPath.setAttribute('stroke-width', options.pathStrokeWidth);
                 newPath.setAttribute('stroke-dasharray', 'none');
@@ -334,7 +332,7 @@ var RivalTracker = (function () {
                              });
                              
             buffer += duration; 
-            console.log("New update added to queue, duration of " + duration + ", " + updateQueue.length + " updates queued, mB : " + buffer);             
+            //console.log("New update added to queue, duration of " + duration + ", " + updateQueue.length + " updates queued, mB : " + buffer);             
             lastUpdateTime = now;            
             processNextUpdate();            
         }         
@@ -371,7 +369,7 @@ var RivalTracker = (function () {
             for(var driver in telemData) {
                 if(lastTelemData[driver] > telemData[driver]) {
                     if(!telemData[driver] > 10) {
-                    console.log("COLLISION! - driver already at " + lastTelemData[driver] + " and should only be at " + telemData[driver] + " at the end of " + currentUpdate.duration + " seconds!!");
+                    //console.log("COLLISION! - driver already at " + lastTelemData[driver] + " and should only be at " + telemData[driver] + " at the end of " + currentUpdate.duration + " seconds!!");
                 
                     }
                 }

@@ -1,5 +1,4 @@
-
-<!-- saved from url=(0059)file:///C:/Users/Samiad/Documents/JavaScript/SVG/index.html -->
+<!DOCTYPE html>
 <html><head>
 <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
 <title>RivalTracker Javascript Example</title>
@@ -11,7 +10,7 @@
 <script type="text/javascript">
 
 window.onload = function() {
-
+	
 var F1Data = {
     "VET":0,
     "WEB":0,
@@ -80,7 +79,7 @@ var nascarData = {
 	"55":0,
 	"32":0,
 	"44":0,
-	"21":0,
+	"21":0
 }
 
 var indycarData = {
@@ -170,7 +169,7 @@ horizOptions.callback = clickCallback;
 
 var track1 = new RivalTracker("track1","suzuka_gp", F1Data, track1Options);
 var track2 = new RivalTracker("track2","daytona_oval", nascarData, track2Options);
-var track3 = new RivalTracker("track3","default", defaultData, track3Options);
+var track3 = new RivalTracker("track3","defaultMap", defaultData, track3Options);
 var track4 = new RivalTracker("track4","indy_oval", indycarData, track4Options);
 var horizontalTrack = new RivalTracker("horizontalTrack","horizontal", F1Data, horizOptions);
 
@@ -685,7 +684,6 @@ function incrementTelemData() {
 
 setInterval(incrementTelemData, 3000);
 }
-
 </script>
 
 
@@ -729,7 +727,7 @@ setInterval(incrementTelemData, 3000);
 
 
         Rival Tracker written by Sam Hazim copyright &#169; 2013.  If you are race iRacing check out my statistics tracking application for iRacing - Racing Rivals<br><br>
-        <a href="http://bit.ly/ahPrL5"><img src="http://www.samiad.co.uk/RRsig.png"></a>
+       <a href="http://bit.ly/ahPrL5"><img src="http://www.samiad.co.uk/RRsig.png"></a>
 
       </div>
 	</div>

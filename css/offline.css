@@ -1,51 +1,36 @@
 #container {
   width: 100%;
-  height: 100%;
-  //background:red;  
+  height: 100%; 
   padding-top:1px;
+  text-align:center;
 }
 
 #logo {
-  //border-style:solid;
-  //border-width:3px;
-  //border-color:gray;
-  //background-color: rgba(255,255,255,0.1);
   text-align:center;
   padding-top: 10px;
   margin:auto;
   width: 100%;
   height: 110px;
-  //background: gray;
 }
 
 #tracks {
+background: rgb(48,48,48); /* Old browsers */
+/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzMwMzAzMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+background: -moz-linear-gradient(top,  rgba(48,48,48,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(48,48,48,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(48,48,48,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(48,48,48,1) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(48,48,48,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(48,48,48,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#303030', endColorstr='#ffffff',GradientType=0 ); /* IE6-8 */
 
-/* IE10 Consumer Preview */ 
-background-image: -ms-linear-gradient(bottom, #FFFFFF 0%, #5C5C5C 100%);
-
-/* Mozilla Firefox */ 
-background-image: -moz-linear-gradient(bottom, #FFFFFF 0%, #5C5C5C 100%);
-
-/* Opera */ 
-background-image: -o-linear-gradient(bottom, #FFFFFF 0%, #5C5C5C 100%);
-
-/* Webkit (Safari/Chrome 10) */ 
-background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #FFFFFF), color-stop(1, #5C5C5C));
-
-/* Webkit (Chrome 11+) */ 
-background-image: -webkit-linear-gradient(bottom, #FFFFFF 0%, #5C5C5C 100%);
-
-/* W3C Markup, IE10 Release Preview */ 
-background-image: linear-gradient(to top, #FFFFFF 0%, #5C5C5C 100%);
-
-  //background-color: rgba(255,255,255,0.3);
   position:relative;
   border-style:solid;
   border-width:1px;
   border-color:gray;
   width: 1180px;
-  height: 1300px;
-  //background:white;  
+  height: 1350px; 
   margin: auto;
   margin-top:2px;
   margin-bottom:2px;
@@ -56,7 +41,6 @@ background-image: linear-gradient(to top, #FFFFFF 0%, #5C5C5C 100%);
 }
 
 #track1Wrapper {
-	//background-color:#FAF8CC;
 	background-color:#FFFAE8;
 	margin-right:0px;
 	float:left;
@@ -72,7 +56,6 @@ background-image: linear-gradient(to top, #FFFFFF 0%, #5C5C5C 100%);
 	float:left;
 }
 #track4Wrapper {
-	//background-color:#FFFFFF;
 	margin-left:0px;
 	background: url(../img/Indianapolis-500-race_-Indy-500-schedule-and-lineup.png);
 	border-style:solid;
@@ -94,7 +77,6 @@ background-image: linear-gradient(to top, #FFFFFF 0%, #5C5C5C 100%);
 #horizTrackWrapper {
     background-color:transparent;
     text-align:center;
-	//border-style:solid;
 	border-width:thick;
 	border-color:red;
     -webkit-border-radius: 12px;
@@ -107,7 +89,6 @@ background-image: linear-gradient(to top, #FFFFFF 0%, #5C5C5C 100%);
 
 .track {
     text-align:center;
-	//border-style:solid;
 	border-width:thick;
 	border-color:red;
     -webkit-border-radius: 12px;
@@ -115,7 +96,6 @@ background-image: linear-gradient(to top, #FFFFFF 0%, #5C5C5C 100%);
     border-radius: 12px;  
     width:500px;   
     margin:30px;
-    //margin-left:40px;
     margin-top:10px;
     padding:20px;
 }
@@ -155,7 +135,6 @@ html {
 trackLabel {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size:14px;
-	//font-style:italic;
 	font-weight:bold;    	
 }
 p {
