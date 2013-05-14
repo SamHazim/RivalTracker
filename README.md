@@ -30,8 +30,8 @@ How to implement
 ```javascript
 var driverData = {
     "driver1" : 0,  // 0% through the track
-    "driver2" : 0.15,  // 1.5% through the track
-    "driver3" : 0.55  // 5.5% through the track
+    "driver2" : 0.15,  // 15% through the track
+    "driver3" : 0.55  // 55% through the track
 }
 ```
 
