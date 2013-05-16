@@ -43,6 +43,8 @@ var RivalTracker = (function () {
         var path;
         var trackLength;        
         var updateQueue = new Array();
+        var firstUpdateExtraDelay = 500; // additional latency applied to first update only
+        var awaitingFirstUpdate = true;
 	var fastestUpdateRateSupported = 300; // throttle fast incoming updates to protect slow browsers
         var lastUpdateTime = Date.now();
         var parentDiv = document.getElementById(trackerDiv);
@@ -309,12 +311,20 @@ var RivalTracker = (function () {
                 telemData = cloneTelemData();
                 lastUpdateTime = now;
                 resetData = false;
+                awaitingFirstUpdate = true;
                 buffer = 0;
                 return;
             }    
             
             var msSinceLastUpdate = now - lastUpdateTime;
 	    if(msSinceLastUpdate < fastestUpdateRateSupported) msSinceLastUpdate = fastestUpdateRateSupported;
+            // if this is our first update extend the duration 
+            if(awaitingFirstUpdate) {
+                msSinceLastUpdate += firstUpdateExtraDelay;
+                //console.log("minimum latency is " + msSinceLastUpdate);
+                awaitingFirstUpdate = false;
+            }	    
+            //console.log("update received, time since last update " + msSinceLastUpdate);
             if(redFlag > 0) {
                 // track has stalled/run out of prediction
                 var msSinceRedFlag = now - redFlag;                
@@ -399,7 +409,17 @@ var RivalTracker = (function () {
 	            // we will draw the car moving backwards.
                 if(percentChange < -20) percentChange += 100;
                 if(percentChange > 90) percentChange -= 100; // if a car moves backwards across the S/F line for some reason the percentChange will be a huge positive jump
-                percentChangePerMs[driver] = percentChange / currentUpdate.duration;              
+                percentChangePerMs[driver] = percentChange / currentUpdate.duration;   
+                
+                /**
+                if(percentChangePerMs[driver] > 0.002) {
+                    percentChangePerMs[driver] = 0.002;                
+                } else if(percentChangePerMs[driver] < -0.002) {
+		    percentChangePerMs[driver] = -0.002;                
+                }
+                */
+                
+                //console.log(currentUpdate.duration + "    " + percentChangePerMs[driver]);
             }        
         }                
             
