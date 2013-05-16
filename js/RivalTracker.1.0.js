@@ -33,7 +33,9 @@ var RivalTracker = (function () {
         var telemData = cloneTelemData();
         var lastTelemData = cloneTelemData();
         var percentChangePerMs = {};
-        var predictionCatchupRate = 0.8;
+        var predictionCatchupRate = 1;
+	var predictionCatchupRateFast = 1;
+	var predictionCatchupRateSlow = 0.8;
         var lastPredictionDuration = 0;
         var redFlag = 0;
         var nodes = {};
@@ -41,6 +43,7 @@ var RivalTracker = (function () {
         var path;
         var trackLength;        
         var updateQueue = new Array();
+	var fastestUpdateRateSupported = 300; // throttle fast incoming updates to protect slow browsers
         var lastUpdateTime = Date.now();
         var parentDiv = document.getElementById(trackerDiv);
         var bufferStatusColor = "#000000";
@@ -54,7 +57,7 @@ var RivalTracker = (function () {
         if(typeof options === "undefined") {
             // no options provided, set all options to default
             var options = {
-		        scaling : 100,
+		scaling : 100,
                 maxPrediction : 8000,
                 pathColor : '#000000',
                 pathStrokeWidth : 6,
@@ -113,8 +116,8 @@ var RivalTracker = (function () {
             for(var index in RivalTracker.paths[trackId].paths) {
                 newPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');    
                 newPath.setAttribute('d', RivalTracker.paths[trackId].paths[index]);
-		        newPath.setAttribute('stroke-miterlimit', '4');
-		        newPath.setAttribute('stroke-width', options.pathStrokeWidth);
+		newPath.setAttribute('stroke-miterlimit', '4');
+		newPath.setAttribute('stroke-width', options.pathStrokeWidth);
                 newPath.setAttribute('stroke-dasharray', 'none');
                 newPath.setAttribute('stroke', options.pathColor);
                 newPath.setAttribute('fill', 'none');
@@ -256,11 +259,11 @@ var RivalTracker = (function () {
             driverLabel.setAttribute('display','none');
         }
 
-        function getPointAt(percent) {        
+        function getPointAt(percent) {   
             // needed because returning a SVGPoint at length 0 returns an incorrect coordinate pair.
             if(percent === 0) {
                 percent += 0.0001;
-            }
+            }	
             return path.getPointAtLength((trackLength/100) * percent);
         }
 
@@ -311,6 +314,7 @@ var RivalTracker = (function () {
             }    
             
             var msSinceLastUpdate = now - lastUpdateTime;
+	    if(msSinceLastUpdate < fastestUpdateRateSupported) msSinceLastUpdate = fastestUpdateRateSupported;
             if(redFlag > 0) {
                 // track has stalled/run out of prediction
                 var msSinceRedFlag = now - redFlag;                
@@ -322,17 +326,17 @@ var RivalTracker = (function () {
             
             lastPredictionDuration = buffer;  // keep track of duration of the last prediction period    
             // if buffer is negative this means the last round of movements went into prediction logic.  Recover this lost time by reducing duration of next update
-            if(buffer < 0) {                
+            if(buffer < 0) {      
                 duration += buffer;
                 buffer = 0;
-            }
+            }	
+            if(duration <= 0) duration = 1;	
             updateQueue.push({
                                "data" : cloneTelemData(),
                                "duration" : duration
                              });
                              
-            buffer += duration; 
-            //console.log("New update added to queue, duration of " + duration + ", " + updateQueue.length + " updates queued, mB : " + buffer);             
+            buffer += duration;
             lastUpdateTime = now;            
             processNextUpdate();            
         }         
@@ -346,9 +350,9 @@ var RivalTracker = (function () {
         function processNextUpdate() {  
             if(lastPredictionDuration < -50) {
                 // last update involved prediction, make sure the next prediction is capped to avoid making predicted movements from previously predicted data (bad!)
-                predictionCatchupRate = 0.1;
+                predictionCatchupRate = predictionCatchupRateSlow;
             } else {
-                predictionCatchupRate = 0.8; // last data was good so the prediction will be more accurate
+                predictionCatchupRate = predictionCatchupRateFast; // last data was good so the prediction will be more accurate
             }
             predicting = false;
             if(updateInProgress) { 
@@ -395,7 +399,7 @@ var RivalTracker = (function () {
 	            // we will draw the car moving backwards.
                 if(percentChange < -20) percentChange += 100;
                 if(percentChange > 90) percentChange -= 100; // if a car moves backwards across the S/F line for some reason the percentChange will be a huge positive jump
-                percentChangePerMs[driver] = percentChange / currentUpdate.duration;                
+                percentChangePerMs[driver] = percentChange / currentUpdate.duration;              
             }        
         }                
             
@@ -441,10 +445,10 @@ var RivalTracker = (function () {
                 }
             } 
             if(!predicting) updateBufferStatusDot("#00FF00");	    	    
-	    
-	        for(var driver in telemData) {
+	    for(var driver in telemData) {
                 circle = nodes[driver];
                 driverLabel = labels[driver];
+		if(typeof percentChangePerMs[driver] == "undefined") continue; // no historical data for this driver
                 var amountToMoveThisUpdate = percentChangePerMs[driver] * dt;
                 if(predicting) {                
                     if(amountToMoveThisUpdate < 0) {
@@ -457,15 +461,14 @@ var RivalTracker = (function () {
                 if(desiredPercentPos === 0) continue; // skip doing any work if there are no changes to apply
                 var desiredPercentPos = lastTelemData[driver] + amountToMoveThisUpdate;
                 if (desiredPercentPos > 100) desiredPercentPos -= 100;
-                if (desiredPercentPos < 0) desiredPercentPos += 100;                
-                
+                if (desiredPercentPos < 0) desiredPercentPos += 100;  
                 var newPoint = getPointAt(desiredPercentPos);                
                 circle.setAttribute("cx", newPoint.x);
                 circle.setAttribute("cy", newPoint.y);
                 driverLabel.setAttribute("x", newPoint.x);
                 driverLabel.setAttribute("y", newPoint.y + (options.nodeSize/4) - options.labelVertOffset);
                 lastTelemData[driver] = desiredPercentPos; 
-	        } 
+	    } 
 	    
         })();
        
