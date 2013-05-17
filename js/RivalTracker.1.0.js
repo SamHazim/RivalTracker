@@ -33,9 +33,9 @@ var RivalTracker = (function () {
         var telemData = cloneTelemData();
         var lastTelemData = cloneTelemData();
         var percentChangePerMs = {};
-        var predictionCatchupRate = 1;
-	var predictionCatchupRateFast = 1;
-	var predictionCatchupRateSlow = 0.8;
+        var predictionCatchupRate = 0.8;
+	var predictionCatchupRateFast = 0.8;
+	var predictionCatchupRateSlow = 0.3;
         var lastPredictionDuration = 0;
         var redFlag = 0;
         var nodes = {};
@@ -43,9 +43,8 @@ var RivalTracker = (function () {
         var path;
         var trackLength;        
         var updateQueue = new Array();
-        var firstUpdateExtraDelay = 500; // additional latency applied to first update only
         var awaitingFirstUpdate = true;
-	var fastestUpdateRateSupported = 300; // throttle fast incoming updates to protect slow browsers
+	var fastestUpdateRateSupported = 200; // drop fast incoming updates
         var lastUpdateTime = Date.now();
         var parentDiv = document.getElementById(trackerDiv);
         var bufferStatusColor = "#000000";
@@ -61,6 +60,7 @@ var RivalTracker = (function () {
             var options = {
 		scaling : 100,
                 maxPrediction : 8000,
+                initialBuffer : 500,
                 pathColor : '#000000',
                 pathStrokeWidth : 6,
                 nodeSize : 15,
@@ -78,6 +78,7 @@ var RivalTracker = (function () {
             // some options provided, override any missing
             options.scaling = (typeof options.scaling === "undefined") ? "100" : options.scaling;
             options.maxPrediction = (typeof options.maxPrediction === "undefined") ? 8000 : options.maxPrediction;
+            options.initialBuffer = (typeof options.initialBuffer === "undefined") ? 500 : options.initialBuffer;
             options.pathColor = (typeof options.pathColor === "undefined") ? "#000000" : options.pathColor;
             options.pathStrokeWidth = (typeof options.pathStrokeWidth === "undefined") ? 6 : options.pathStrokeWidth;
             options.nodeSize = (typeof options.nodeSize === "undefined") ? 15 : options.nodeSize;
@@ -304,6 +305,7 @@ var RivalTracker = (function () {
 	     * Public function to schedule a position update to be applied over 'duration' milliseconds
          */ 
         this.updatePositions = function() {
+            var newData = cloneTelemData();            
             var now = Date.now();
             var duration;
             if(resetData) {   
@@ -314,17 +316,21 @@ var RivalTracker = (function () {
                 awaitingFirstUpdate = true;
                 buffer = 0;
                 return;
-            }    
+            }
             
-            var msSinceLastUpdate = now - lastUpdateTime;
-	    if(msSinceLastUpdate < fastestUpdateRateSupported) msSinceLastUpdate = fastestUpdateRateSupported;
+            var msSinceLastUpdate = now - lastUpdateTime;            
+	    if(msSinceLastUpdate < fastestUpdateRateSupported) {
+	        //console.log("dropping update " + msSinceLastUpdate);
+	        return;
+	    } 
+	    
             // if this is our first update extend the duration 
             if(awaitingFirstUpdate) {
-                msSinceLastUpdate += firstUpdateExtraDelay;
+                msSinceLastUpdate += options.initialBuffer;
                 //console.log("minimum latency is " + msSinceLastUpdate);
                 awaitingFirstUpdate = false;
             }	    
-            //console.log("update received, time since last update " + msSinceLastUpdate);
+            //console.log("update received, time since last update " + msSinceLastUpdate + ", currentBuffer " + buffer);
             if(redFlag > 0) {
                 // track has stalled/run out of prediction
                 var msSinceRedFlag = now - redFlag;                
@@ -338,15 +344,17 @@ var RivalTracker = (function () {
             // if buffer is negative this means the last round of movements went into prediction logic.  Recover this lost time by reducing duration of next update
             if(buffer < 0) {      
                 duration += buffer;
+                //console.log("buffer was " + buffer + " so this update only has " + duration);
                 buffer = 0;
             }	
             if(duration <= 0) duration = 1;	
             updateQueue.push({
-                               "data" : cloneTelemData(),
+                               "data" : newData,
                                "duration" : duration
                              });
-                             
+            //console.log("this update duration " + duration);    
             buffer += duration;
+            //console.log("newBuffer " + buffer);
             lastUpdateTime = now;            
             processNextUpdate();            
         }         
@@ -378,16 +386,18 @@ var RivalTracker = (function () {
             currentUpdate.expires = Date.now() + currentUpdate.duration;   
             if(options.maxPrediction > 0) currentUpdate.expires -= 17; // if prediction is enabled, remove one frame to account
                                                                        // for rendering overhead.  This keeps map synced to the incoming data updates. 
-            telemData = currentUpdate.data;    // update telemData with latest update
+            telemData = currentUpdate.data;    // update telemData with latest update            
             
+            /**
             for(var driver in telemData) {
-                if(lastTelemData[driver] > telemData[driver]) {
+                if(lastTelemData[driver] > telemData[driver]) {                    
                     if(!telemData[driver] > 10) {
-                    //console.log("COLLISION! - driver already at " + lastTelemData[driver] + " and should only be at " + telemData[driver] + " at the end of " + currentUpdate.duration + " seconds!!");
-                
+                    console.log("COLLISION! - driver already at " + lastTelemData[driver] + " and should only be at " + telemData[driver] + " at the end of " + currentUpdate.duration + " seconds!!");
                     }
                 }
-            }            
+            }     
+            */
+            
             // hide any drivers missing from the latest telemData
             for(var driver in lastTelemData) {
                 if(telemData[driver] === undefined) {
@@ -412,12 +422,19 @@ var RivalTracker = (function () {
                 percentChangePerMs[driver] = percentChange / currentUpdate.duration;   
                 
                 /**
+               
                 if(percentChangePerMs[driver] > 0.002) {
                     percentChangePerMs[driver] = 0.002;                
                 } else if(percentChangePerMs[driver] < -0.002) {
 		    percentChangePerMs[driver] = -0.002;                
                 }
                 */
+                
+                /**
+		if(lastPredictionDuration < -50) {
+			if(percentChangePerMs[driver] < 0) percentChangePerMs[driver] = 0.001;
+		}
+		*/
                 
                 //console.log(currentUpdate.duration + "    " + percentChangePerMs[driver]);
             }        
@@ -469,14 +486,25 @@ var RivalTracker = (function () {
                 circle = nodes[driver];
                 driverLabel = labels[driver];
 		if(typeof percentChangePerMs[driver] == "undefined") continue; // no historical data for this driver
+		
+		// cap movement rate in predicted phase
+		/**
+		if(predicting) {
+		    if(percentChangePerMs[driver] < 0) {
+		        percentChangePerMs[driver] = 0;
+		    } else if(percentChangePerMs[driver] > 0.001) {
+		        percentChangePerMs[driver] = 0.001;
+		    }
+		}
+		*/		
+		
                 var amountToMoveThisUpdate = percentChangePerMs[driver] * dt;
                 if(predicting) {                
                     if(amountToMoveThisUpdate < 0) {
-                        amountToMoveThisUpdate = 0; // don't move backwards in a predicting phase
+                        continue; // don't move backwards in a predicting phase
                     } else {
                         amountToMoveThisUpdate *= predictionCatchupRate; // if we are predicting the node movement in the absence of real data, slow down the movements to avoid moving too far (which would require a negative adjustment on the next update)
-                    }
-                    
+                    }                    
                 }
                 if(desiredPercentPos === 0) continue; // skip doing any work if there are no changes to apply
                 var desiredPercentPos = lastTelemData[driver] + amountToMoveThisUpdate;
