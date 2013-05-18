@@ -35,8 +35,9 @@ var RivalTracker = (function () {
         var percentChangePerMs = {};
         var predictionCatchupRate = 0.8;
 	var predictionCatchupRateFast = 0.8;
-	var predictionCatchupRateSlow = 0.3;
+	var predictionCatchupRateSlow = 0.4;
         var lastPredictionDuration = 0;
+        var lastProcessedEpoc;
         var redFlag = 0;
         var nodes = {};
         var labels = {};
@@ -44,7 +45,7 @@ var RivalTracker = (function () {
         var trackLength;        
         var updateQueue = new Array();
         var awaitingFirstUpdate = true;
-	var fastestUpdateRateSupported = 200; // drop fast incoming updates
+	var fastestUpdateRateSupported = 100; // drop fast incoming updates
         var lastUpdateTime = Date.now();
         var parentDiv = document.getElementById(trackerDiv);
         var bufferStatusColor = "#000000";
@@ -304,25 +305,51 @@ var RivalTracker = (function () {
         /**
 	     * Public function to schedule a position update to be applied over 'duration' milliseconds
          */ 
-        this.updatePositions = function() {
+        this.updatePositions = function(epoc) {
             var newData = cloneTelemData();            
             var now = Date.now();
-            var duration;
-            if(resetData) {   
-                // full reset requested. reset and start movement on next update
-                telemData = cloneTelemData();
-                lastUpdateTime = now;
-                resetData = false;
-                awaitingFirstUpdate = true;
-                buffer = 0;
-                return;
-            }
+            var duration = 0;
             
-            var msSinceLastUpdate = now - lastUpdateTime;            
+            var msSinceLastUpdate = now - lastUpdateTime;
+            // throw out updates with tiny durations
 	    if(msSinceLastUpdate < fastestUpdateRateSupported) {
 	        //console.log("dropping update " + msSinceLastUpdate);
 	        return;
 	    } 
+	    
+            var msNewData;            
+            if(typeof epoc === "undefined") epoc = Date.now();            
+            if(typeof lastProcessedEpoc === 'undefined') {
+                var msNewData = msSinceLastUpdate;
+            } else {
+                var msNewData = epoc - lastProcessedEpoc;  
+            } 
+            //console.log(msSinceLastUpdate + " msSinceLastUpdate " + msNewData + " msNewData");
+            //console.log("current buffer " + buffer + " (predicting? " + predicting + ")");
+            lastPredictionDuration = buffer;  // keep track of duration of the last prediction period 
+            
+            // we have a red flag
+            if(redFlag > 0) {
+                buffer = 0;
+                msSinceLastUpdate = msNewData;
+                awaitingFirstUpdate = true;
+                redFlag = 0;
+            }            
+            
+            // reduce duration to account for predicted movement
+            if(buffer < 0) {
+                duration += buffer;
+                msNewData += buffer;                
+                if(msNewData < 0) {
+                    //console.log("expired update, dropping : " + msNewData);
+                    return;
+                }   
+                buffer = 0;
+            }
+            
+            // process this update
+            lastUpdateTime = now;
+            lastProcessedEpoc = epoc; 
 	    
             // if this is our first update extend the duration 
             if(awaitingFirstUpdate) {
@@ -331,32 +358,22 @@ var RivalTracker = (function () {
                 awaitingFirstUpdate = false;
             }	    
             //console.log("update received, time since last update " + msSinceLastUpdate + ", currentBuffer " + buffer);
-            if(redFlag > 0) {
-                // track has stalled/run out of prediction
-                var msSinceRedFlag = now - redFlag;                
-                duration = msSinceLastUpdate - msSinceRedFlag + 17; // add an extra frame to account for browser rendering overhead
-                redFlag = 0;
-            } else {
-                duration = msSinceLastUpdate;
+
+            duration += msSinceLastUpdate;         
+            //console.log("duration " + duration + ", msNewData " + msNewData);
+
+            if(duration <= 0) {
+                //console.log("!!! DURATION " + duration);
+                duration = 1;	
             }
-            
-            lastPredictionDuration = buffer;  // keep track of duration of the last prediction period    
-            // if buffer is negative this means the last round of movements went into prediction logic.  Recover this lost time by reducing duration of next update
-            if(buffer < 0) {      
-                duration += buffer;
-                //console.log("buffer was " + buffer + " so this update only has " + duration);
-                buffer = 0;
-            }	
-            if(duration <= 0) duration = 1;	
             updateQueue.push({
                                "data" : newData,
                                "duration" : duration
-                             });
-            //console.log("this update duration " + duration);    
+                             });    
             buffer += duration;
             //console.log("newBuffer " + buffer);
-            lastUpdateTime = now;            
-            processNextUpdate();            
+                        
+            processNextUpdate(); 
         }         
        
         /**
@@ -548,11 +565,10 @@ var RivalTracker = (function () {
         }
         
         /*
-         * Public function to reset track to its initial state.  This means the very next call to updatePosition() will set the node starting point (but not move them)
-         * and the second updatePosition() will commence movement, with the duration (and thus, buffer/lag) being the time delta between the two calls
+         * Public function to reset track to its initial state.
          */
         this.resetBuffer = function() {
-            resetData = true;    
+            redFlag = Date.now();
             updateBufferStatusDot('#FF0000');
         }
     }
