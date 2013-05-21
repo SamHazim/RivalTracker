@@ -56,6 +56,7 @@ options - set of (optional) configuration options that can alter the way the tra
 var options = {
     scaling : 100,          (used to grow or shrink the generated circuit map asset)
     maxPrediction : 8000,   (number of ms of prediction movement to apply to the nodes in case of delayed data updates)
+    initialBuffer : 5000,   (add an intentional buffer/delay, helpful for low bandwidth implementations)
     pathColor : '#000000',  (colour of the main track path)
     pathStrokeWidth : 6,    (width of the main track path)
     nodeSize : 15,          (size of the node/markers representing drivers)
